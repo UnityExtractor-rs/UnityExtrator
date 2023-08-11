@@ -30,6 +30,17 @@ export async function blobToBase64(blob: Blob): Promise<string> {
         reader.readAsDataURL(blob)
     })
     return await promise
+}
 
+export function notNullOr<T>(data:T| undefined|null,def:T):T{
+    return data?data:def
+}
 
+export interface BtnDefine{
+    icon?: string,
+    onClick: () => void,
+    color?: string,
+    tooltip?: string,
+    variant?: "elevated" | "flat" | "tonal" | "outlined" | "text" | "plain",
+    id?:string
 }

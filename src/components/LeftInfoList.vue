@@ -1,30 +1,14 @@
 <template>
-  <v-container class="h-screen">
-    <v-row align-content="start" class="h-auto">
-      <v-col>
-        <v-btn class="text-amber-darken-3" @click="onClick">
-          <v-icon icon="mdi-plus"/>
-        </v-btn>
-      </v-col>
-      <v-col>
-        <v-btn class="text-amber-darken-3" @click="onSelectFile">
-          <v-icon icon="mdi-image-plus"/>
-        </v-btn>
-      </v-col>
-      <v-col>
-        <v-btn class="text-amber-darken-3" @click="onLoadUnity">
-          <v-icon icon="mdi-cog"/>
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-row class="pa-2" style="height: 84%">
+  <v-container class="h-screen d-flex flex-column ma-0 pa-2">
+      <top-btn-bar :buttons = "buttons" ></top-btn-bar>
 
-      <v-card class=" h-100 overflow-y-auto overflow-x-hidden pa-2"
+      <v-card loading class="pa-2 h-100"
       >
+        <v-card-item class="  overflow-y-auto overflow-x-hidden elevation-2">
 
         <v-expansion-panels
             multiple=""
-            variant="accordion">
+            variant="accordion" class="">
           <v-expansion-panel
               v-for="item in listInfo"
               :key="item.id"
@@ -45,12 +29,8 @@
 
           </v-expansion-panel>
         </v-expansion-panels>
+        </v-card-item>
       </v-card>
-    </v-row>
-    <v-row align-content="space-evenly" class="pa-2">
-      <v-progress-linear color="primary" height="10" indeterminate="" rounded/>
-
-    </v-row>
   </v-container>
 </template>
 
@@ -58,9 +38,10 @@
 
 import {dialog, fs, tauri,} from "@tauri-apps/api";
 import {computed, ref} from "vue";
-import {blobToBase64, PreviewImage} from "../tauri_pack/pack.ts";
+import {blobToBase64, BtnDefine, PreviewImage} from "../tauri_pack/pack.ts";
+import TopBtnBar from "./TopBtnBar.vue";
 
-const property = defineProps<{}>()
+
 
 const progress = ref(75.0);
 const listInfo = ref([
@@ -173,6 +154,32 @@ const onLoadUnity = async () => {
     })
   }
 }
+
+const buttons:BtnDefine[] = [
+  {
+    icon:"mdi-file-image-outline",
+    onClick:onSelectFile,
+    tooltip:"Open an Image",
+  },
+  {
+    icon:"mdi-unity",
+    onClick:onLoadUnity,
+    tooltip:"Open an Image",
+  },{
+    icon:"mdi-cog-outline",
+    onClick:onClick,
+    tooltip:"Open an Image",
+  },{
+    icon:"mdi-file-search-outline",
+    onClick:()=>{},
+    tooltip:"Search",
+  },{
+    icon:"mdi-close-circle-outline",
+    onClick:()=>{},
+    tooltip:"Quit",
+  }
+]
+
 </script>
 
 <style scoped>
