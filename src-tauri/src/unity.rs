@@ -44,10 +44,16 @@ impl From<ImageError> for ThisError {
         }
     }
 }
-
+#[derive(Clone,Debug,Serialize,Deserialize)]
+pub struct UnityTexture{
+    img:String,
+    width :u32,
+    height:u32,
+    name:String,
+}
 
 #[command]
-pub fn extractor_unity_img(filename:String)->Result<String,ThisError>{
+pub fn extractor_unity_img(filename:String)->Result<UnityTexture,ThisError>{
     let mut env = Env::new();
     let payload = read(filename).expect("error");
     env.load_from_slice(&payload)?;
@@ -63,7 +69,12 @@ pub fn extractor_unity_img(filename:String)->Result<String,ThisError>{
         img.write_with_encoder(png)?;
 
         let encoded = base64::engine::general_purpose::STANDARD.encode(buffer);
-    Ok(format!("data:image/png;base64,{}",encoded))
+    Ok(UnityTexture{
+        img: format!("data:image/png;base64,{}", encoded) ,
+        width: s.width as _,
+        height:s.height as _,
+        name:s.name.clone()
+    })
     }else {
         Err(ThisError{msg:"No Texture Found".into()})
     }

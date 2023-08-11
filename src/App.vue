@@ -1,11 +1,10 @@
 <template>
-  <v-app id="main" full-height>
-      <Main/>
+  <v-app  full-height>
+      <router-view/>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import Main from "./components/Main.vue";
 
 
 </script>

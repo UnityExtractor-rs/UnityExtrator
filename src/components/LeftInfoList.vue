@@ -58,10 +58,9 @@
 
 import {dialog, fs, tauri,} from "@tauri-apps/api";
 import {computed, ref} from "vue";
+import {blobToBase64, PreviewImage} from "../tauri_pack/pack.ts";
 
-const property = defineProps<{
-  selectFile: (String ) => void
-}>()
+const property = defineProps<{}>()
 
 const progress = ref(75.0);
 const listInfo = ref([
@@ -126,7 +125,7 @@ const onSelectFile = async () => {
         multiple: false,
         directory: false,
         recursive: false,
-        filters: [{name: "Image", extensions: ["png","jpg","jpeg"]}]
+        filters: [{name: "Image", extensions: ["png", "jpg", "jpeg"]}]
       }
   )
   if (path == null || (typeof path == "object" && path.length == 0)) {
@@ -138,12 +137,12 @@ const onSelectFile = async () => {
   console.log(stream.length)
   let blob = new Blob([stream],)
   console.log(blob)
-  console.log(property.selectFile)
 
-  property.selectFile(URL.createObjectURL(blob))
+  // property.selectFile(URL.createObjectURL(blob))
+  await PreviewImage({name: filename, obj_url: await blobToBase64(blob), description: "Image from File"})
 }
 
-const onLoadUnity=async ()=>{
+const onLoadUnity = async () => {
   let path = await dialog.open({
         title: "Select File",
         multiple: false,
@@ -157,12 +156,22 @@ const onLoadUnity=async ()=>{
   let filename = typeof path == "string" ? path : path[0]
   console.log(filename)
 
-  let ret = await tauri.invoke<null>("extractor_unity_img",{filename:filename})
-      .catch((err:{msg:string})=> {
+  let ret = await tauri.invoke<{
+    img: string, width: number, height: number, name: string
+  }>("extractor_unity_img", {filename: filename})
+      .catch((err: { msg: string }) => {
         alert(`error unpack ${err.msg}`)
       })
   console.log(ret)
-  property.selectFile(ret)
+  if (ret != null) {
+    await PreviewImage({
+      name: filename,
+      obj_url: ret.img,
+      description: `Image From Unity File [${ret.name}]`,
+      width: ret.width,
+      height: ret.height
+    })
+  }
 }
 </script>
 

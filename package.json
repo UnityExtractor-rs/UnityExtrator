@@ -14,6 +14,7 @@
     "@tauri-apps/api": "^1.4.0",
     "roboto-fontface": "*",
     "vue": "^3.3.4",
+    "vue-router": "^4.2.4",
     "vuetify": "3",
     "webfontloader": "^1.0.0"
   },
@@ -21,6 +22,8 @@
     "@tauri-apps/cli": "^1.4.0",
     "@types/webfontloader": "^1.0.0",
     "@vitejs/plugin-vue": "^4.2.3",
+    "sass": "^1.65.1",
+    "sass-loader": "^13.3.2",
     "typescript": "^5.0.2",
     "vite": "^4.4.4",
     "vite-plugin-vuetify": "^1",

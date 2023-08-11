@@ -47,10 +47,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "resizable": true,
+        "resizable": false,
+        "alwaysOnTop": true,
         "title": "UnityExtractor",
-        "width": 800,
-        "height": 600
+        "width": 328,
+        "height": 648
       }
     ]
   }
