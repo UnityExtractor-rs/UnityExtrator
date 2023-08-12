@@ -1,34 +1,13 @@
 <template>
   <v-container class="h-screen d-flex flex-column ma-0 pa-2">
       <top-btn-bar :buttons = "buttons" ></top-btn-bar>
-
-      <v-card loading class="pa-2 h-100"
-      >
-        <v-card-item class="  overflow-y-auto overflow-x-hidden elevation-2">
-
-        <v-expansion-panels
-            multiple=""
-            variant="accordion" class="">
-          <v-expansion-panel
-              v-for="item in listInfo"
-              :key="item.id"
-              :title="item.text"
-          >
-            <v-expansion-panel-text class="pa-0 ma-0">
-              <v-list class="align-start">
-                <v-list-item>
-                  <v-icon icon="mdi-file-document"></v-icon>
-                  {{ item.originFile }}
-                </v-list-item>
-                <v-list-item>
-                  <v-icon icon="mdi-cog"></v-icon>
-                  {{ item.originFile }}
-                </v-list-item>
-              </v-list>
-            </v-expansion-panel-text>
-
-          </v-expansion-panel>
-        </v-expansion-panels>
+      <v-card loading class="pa-2 h-100">
+        <v-card-item class="h-100 overflow-y-auto overflow-x-hidden elevation-2"
+        style="align-content: start;"
+        >
+        <expandable-list
+        :items="listInfo"
+        ></expandable-list>
         </v-card-item>
       </v-card>
   </v-container>
@@ -38,62 +17,121 @@
 
 import {dialog, fs, tauri,} from "@tauri-apps/api";
 import {computed, ref} from "vue";
+import { ExpandItem } from "../dto/expandable";
 import {blobToBase64, BtnDefine, PreviewImage} from "../tauri_pack/pack.ts";
 import TopBtnBar from "./TopBtnBar.vue";
-
+import ExpandableList from "./ExpandableList.vue";
 
 
 const progress = ref(75.0);
-const listInfo = ref([
+const listInfo:ExpandItem[] = [
   {
-    id: 0,
-    text: "A",
-    originFile: "ABC",
+    name: "A",
+    icon:"mdi-close",
+    onClick:()=>{},
+    childen:[
+      {name:"B",onClick:()=>{},icon:"mdi-image"},
+      {name:"B",onClick:()=>{},icon:"mdi-cof"},
+    ],
   },
   {
-    id: 1,
-    text: "B",
-    originFile: "ABCGG",
+    name: "b",
+    icon:"mdi-close",
+    onClick:()=>{},
+    childen:[
+      {name:"B",onClick:()=>{},icon:"mdi-image"},
+      {name:"B",onClick:()=>{}},
+    ],
   },
   {
-    id: 2,
-    text: "C",
-    originFile: "ABCDD",
-  }, {
-    id: 3,
-    text: "C",
-    originFile: "ABCDD",
+    name: "A",
+    icon:"mdi-close",
+    onClick:()=>{},
+    childen:[
+      {name:"B",onClick:()=>{},icon:"mdi-image"},
+      {name:"B",onClick:()=>{}},
+    ],
   },
   {
-    id: 4,
-    text: "C",
-    originFile: "ABCDD",
+    name: "A",
+    icon:"mdi-close",
+    onClick:()=>{},
+    childen:[
+      {name:"B",onClick:()=>{},icon:"mdi-image"},
+      {name:"B",onClick:()=>{}},
+    ],
   },
   {
-    id: 5,
-    text: "C",
-    originFile: "ABCDD",
-  }, {
-    id: 4,
-    text: "C",
-    originFile: "ABCDD",
+    name: "A",
+    icon:"mdi-close",
+    onClick:()=>{},
+    childen:[
+      {name:"B",onClick:()=>{},icon:"mdi-image"},
+      {name:"B",onClick:()=>{}},
+    ],
   },
   {
-    id: 5,
-    text: "C",
-    originFile: "ABCDD",
+    name: "A",
+    icon:"mdi-close",
+    onClick:()=>{},
+    childen:[
+      {name:"B",onClick:()=>{},icon:"mdi-image"},
+      {name:"B",onClick:()=>{}},
+    ],
   },
   {
-    id: 4,
-    text: "C",
-    originFile: "ABCDD",
+    name: "A",
+    icon:"mdi-close",
+    onClick:()=>{},
+    childen:[
+      {name:"B",onClick:()=>{},icon:"mdi-image"},
+      {name:"B",onClick:()=>{}},
+    ],
   },
-  {
-    id: 6,
-    text: "C",
-    originFile: "ABCDD",
-  }
-])
+  // {
+  //   id: 1,
+  //   text: "B",
+  //   originFile: "ABCGG",
+  // },
+  // {
+  //   id: 2,
+  //   text: "C",
+  //   originFile: "ABCDD",
+  // }, {
+  //   id: 3,
+  //   text: "C",
+  //   originFile: "ABCDD",
+  // },
+  // {
+  //   id: 4,
+  //   text: "C",
+  //   originFile: "ABCDD",
+  // },
+  // {
+  //   id: 5,
+  //   text: "C",
+  //   originFile: "ABCDD",
+  // }, {
+  //   id: 4,
+  //   text: "C",
+  //   originFile: "ABCDD",
+  // },
+  // {
+  //   id: 5,
+  //   text: "C",
+  //   originFile: "ABCDD",
+  // },
+  // {
+  //   id: 4,
+  //   text: "C",
+  //   originFile: "ABCDD",
+  // },
+  // {
+  //   id: 6,
+  //   text: "C",
+  //   originFile: "ABCDD",
+  // }
+]
 
 
 const onClick = async () => {
