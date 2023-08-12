@@ -41,6 +41,7 @@ const remain = computed(() => {
 <template>
   <v-row align="center" align-content="center" class="d-flex flex-row ma-1" justify="center" no-gutters>
     <v-btn v-for="btn in firstThree"
+      :key="btn.id"
            :id="btn.id"
            :color="notNullOr(btn.color,'indigo')"
            :variant="notNullOr(btn.variant,'elevated')"
