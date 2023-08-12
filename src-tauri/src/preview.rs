@@ -12,20 +12,20 @@ static WINDOW_PATH: Lazy<&'static Path> = Lazy::new(|| Path::new("/preview"));
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PreviewPayload {
-    obj_url: String,
-    name: String,
-    description: Option<String>,
-    ty: Option<String>,
-    width: Option<i32>,
-    height: Option<i32>,
+    pub obj_url: String,
+    pub name: String,
+    pub description: Option<String>,
+    pub ty: Option<String>,
+    pub width: Option<i32>,
+    pub height: Option<i32>,
 }
 
-#[command]
+#[command(async)]
 pub async fn preview_image(app: AppHandle, payload: PreviewPayload) -> tauri::Result<()> {
     let window = if let Some(window) = app.get_window(WINDOWS_NAME) {
         window
     } else {
-        WindowBuilder::new(
+        let w = WindowBuilder::new(
             &app,
             WINDOWS_NAME,
             WindowUrl::App(WINDOW_PATH.to_path_buf()),
@@ -34,14 +34,17 @@ pub async fn preview_image(app: AppHandle, payload: PreviewPayload) -> tauri::Re
         .focused(true)
         .center()
         .inner_size(816f64, 648f64)
-        .build()?
+        .build()?;
+
+        // wait window open
+        sleep(Duration::from_millis(500));
+        w
     };
     #[cfg(debug_assertions)]
     if !window.is_devtools_open() {
         window.open_devtools()
     }
-    // wait window open
-    sleep(Duration::from_millis(500));
+
     window.emit(PREVIEW_IMG, payload)?;
 
     Ok(())
