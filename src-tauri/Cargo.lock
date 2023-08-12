@@ -3279,6 +3279,7 @@ dependencies = [
 [[package]]
 name = "texture_decoder"
 version = "0.1.0"
+source = "git+https://github.com/yuanyan3060/unity-rs.git?rev=0cbfac1#0cbfac1fc7651f439fc92a507bbf97c4e2033a26"
 dependencies = [
  "byteorder",
  "bytes",
@@ -3591,6 +3592,7 @@ dependencies = [
 [[package]]
 name = "unity_rs"
 version = "0.1.0"
+source = "git+https://github.com/yuanyan3060/unity-rs.git?rev=0cbfac1#0cbfac1fc7651f439fc92a507bbf97c4e2033a26"
 dependencies = [
  "dashmap",
  "image",
