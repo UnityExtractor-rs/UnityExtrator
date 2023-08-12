@@ -1,4 +1,4 @@
-import {tauri} from "@tauri-apps/api";
+import {dialog, tauri,} from "@tauri-apps/api";
 
 export interface ImagePayload {
     obj_url: string,
@@ -43,4 +43,19 @@ export interface BtnDefine{
     tooltip?: string,
     variant?: "elevated" | "flat" | "tonal" | "outlined" | "text" | "plain",
     id?:string
+}
+
+export async function openOneFile(title?:string, filters?:DailogFilter):Promise<string | null>{
+    let path = await dialog.open({
+        title: title? title:"Select a File",
+        multiple: false,
+        directory: false,
+        recursive: false,
+        filters:filters
+      });
+      if (path == null || (typeof path == "object" && path.length == 0)) {
+        return null;
+      }
+      let filename = typeof path == "string" ? path : path[0];
+      return filename
 }
