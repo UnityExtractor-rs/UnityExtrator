@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import LeftInfoList from "../components/LeftInfoList.vue";
+import LeftInfoList from "../components/MainPage.vue";
 import {ref} from "vue";
 
 const ObjUrl = ref<string>("");
