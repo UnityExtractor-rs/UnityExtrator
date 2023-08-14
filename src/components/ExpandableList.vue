@@ -1,6 +1,10 @@
 <template>
   <v-list density="compact">
-    <v-list-group v-for="(item, i) in property.items" :value="i" :key="i">
+    <v-list-group
+      v-for="(item, itemIdx) in property.items"
+      :value="itemIdx"
+      :key="itemIdx"
+    >
       <template v-slot:activator="{ props }">
         <v-list-item
           v-bind="props"
@@ -12,14 +16,14 @@
               size="small"
               :icon="item.icon"
               class="mr-2"
-              :id="`menu-right-activator-${i}`"
               color="indigo-lighten-2"
               variant="flat"
+              :disabled="!item.menuItems"
             >
-          </v-btn>
+            </v-btn>
             <v-menu
               v-if="item.menuItems"
-              :activator="`#menu-right-activator-${i}`"
+              activator="parent"
             >
               <v-list>
                 <v-list-item
@@ -38,20 +42,46 @@
             </v-menu>
           </template>
           <v-tooltip v-if="item.desription" activator="parent" location="top">
-            {{ item.desription }}
+            {{ `${item.name} - ${item.desription}` }}
           </v-tooltip>
         </v-list-item>
       </template>
       <v-list-item
-        v-for="(child, i) in item.childen"
-        :key="i"
-        :prepend-icon="child.icon"
+        v-for="(child, childIdx) in item.childen"
+        :key="childIdx"
         :title="child.name"
         :subtitle="child.desription"
         @click="child.onClick"
       >
+        <template v-slot:prepend>
+          <v-btn
+            size="small"
+            :icon="child.icon"
+            class="mr-2"
+            color="indigo-lighten-2"
+            variant="flat"
+            :disabled="!child.menuItems"
+          >
+          </v-btn>
+          <v-menu v-if="child.menuItems" activator="parent">
+            <v-list>
+              <v-list-item
+                v-for="(menu, idx) in child.menuItems"
+                :key="idx"
+                :prepend-icon="menu.icon"
+                :title="menu.text"
+                @click="
+                  () => {
+                    menu.onClick({ item, child });
+                  }
+                "
+              >
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
         <v-tooltip v-if="child.desription" activator="parent" location="top">
-          {{ child.desription }}
+          {{ `${child.name} - ${child.desription}` }}
         </v-tooltip>
       </v-list-item>
     </v-list-group>
@@ -65,7 +95,6 @@ import { ExpandItem } from "../dto/expandable";
 const property = defineProps<{
   items: ExpandItem[];
 }>();
-
 </script>
 
 <style>

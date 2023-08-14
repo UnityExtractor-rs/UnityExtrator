@@ -4,18 +4,19 @@ export interface ExpandItem{
     desription?:string,
     icon?:string,
     childen:ExpandItemChild[],
-    menuItems?: ExpandItemMenu[],
+    menuItems?: ExpandItemMenu<ExpandItem>[],
 }
 
 export interface ExpandItemChild{
     name:string,
     desription?:string,
     icon?:string,
-    onClick:()=>void
+    onClick:()=>void,
+    menuItems?:ExpandItemMenu<{item:ExpandItem,child:ExpandItemChild}>[]
 }
 
-export interface ExpandItemMenu{
+export interface ExpandItemMenu<I>{
     text:string,
     icon?:string,
-    onClick:(item:ExpandItem)=>void
+    onClick:(item:I)=>void
 }
