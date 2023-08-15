@@ -30,7 +30,8 @@ jobs:
         id: node_use_description
         uses: mad9000/actions-find-and-replace-string@3
         with:
-          source: ${{steps.description.outputs.content}}
+          source: >- 
+            ${{steps.description.outputs.content}}
           find: "`"
           replace: "\\`"
 
