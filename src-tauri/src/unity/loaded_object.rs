@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use super::{
-    dto::{Loadable, LoadedPyaload},
+    dto::{Loadable, LoadedPayload},
     UnityResult,
 };
 
@@ -10,7 +10,7 @@ pub struct LoadedObject {
     pub icon: &'static str,
     pub name: String,
     pub meta: Vec<String>,
-    pub payload: LoadedPyaload,
+    pub payload: LoadedPayload,
 }
 
 impl LoadedObject {

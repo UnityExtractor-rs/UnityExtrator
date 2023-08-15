@@ -16,7 +16,7 @@ tauri-build = { version = "1.4", features = [] }
 tauri = { version = "1.4", features = [ "fs-all", "dialog-all", "shell-open"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-unity_rs = { version =  "0.1.0",git = "https://github.com/yuanyan3060/unity-rs.git" ,rev = "0cbfac1" }
+unity_rs = { version =  "0.1.0",git = "https://github.com/Goodjooy/unity-rs.git" ,rev = "3c516b5" }
 once_cell = "1.18.0"
 image = "0.24.7"
 bytes = "1.4.0"

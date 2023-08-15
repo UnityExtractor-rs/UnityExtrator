@@ -17,7 +17,7 @@ pub struct ImagePreviewPayload {
     pub image_url: String,
     pub name: String,
     pub description: Option<String>,
-    pub fromat: String,
+    pub format: String,
     pub width: Option<i32>,
     pub height: Option<i32>,
 }

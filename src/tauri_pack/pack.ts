@@ -1,4 +1,5 @@
-import { dialog, tauri, } from "@tauri-apps/api";
+import { dialog } from "@tauri-apps/api";
+import { DialogFilter } from "@tauri-apps/api/dialog";
 import { emit } from "@tauri-apps/api/event";
 
 
@@ -32,7 +33,7 @@ export interface BtnDefine {
     id?: string
 }
 
-export async function openOneFile(title?: string, filters?: DailogFilter): Promise<string | null> {
+export async function openOneFile(title?: string, filters?: DialogFilter[]): Promise<string | null> {
     let path = await dialog.open({
         title: title ? title : "Select a File",
         multiple: false,

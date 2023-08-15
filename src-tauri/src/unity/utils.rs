@@ -3,10 +3,10 @@ use std::sync::Arc;
 use dashmap::DashMap;
 use uuid::Uuid;
 
-use super::{dto::StoreUnityBoundle, error::Error, loaded_object::LoadedObject, UnityResult};
+use super::{dto::StoreUnityBundle, error::Error, loaded_object::LoadedObject, UnityResult};
 
 pub(super) fn get_object(
-    map: &DashMap<Uuid, StoreUnityBoundle>,
+    map: &DashMap<Uuid, StoreUnityBundle>,
     asset_id: Uuid,
     object_id: usize,
 ) -> UnityResult<Arc<LoadedObject>> {

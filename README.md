@@ -17,7 +17,7 @@ Make All Asset Extract action in **ONE** App
     - [x] TextAsset
     - [x] Sprite
 - [ ] Support custom script load & execute
-    - [ ] Load via cabi
+    - [ ] Load via c-abi
     - [ ] LUA support
     - [ ] WASM script support
 

@@ -47,9 +47,13 @@ const buttons: BtnDefine[] = [
       loading.value = true;
       let file = await openOneFile("Select a Unity Asset File");
       if (file) {
-        let value = await loadUnityAsset(file);
-        unityAsset.value.push(value);
-        console.log(unityAsset.value);
+        try {
+          let value = await loadUnityAsset(file);
+          unityAsset.value.push(value);
+          console.log(unityAsset.value);
+        } catch (error) {
+          alert(`Load Unity Asset Failure: ${error}`);
+        }
       }
     },
     tooltip: "Load a Unity Assets",
