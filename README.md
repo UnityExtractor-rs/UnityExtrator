@@ -1,14 +1,20 @@
 # UnityExtractor
+<div align="center">
+
+![LOGO](./src-tauri/icons/128x128.png)
+
 
 A Unity asset extractor base on `Tauri` + `Vue` + `Vuetify`
 
-Make All Asset Extract action in **ONE** App
+Making All Asset Extract action in **ONE** App
+</div>
 
 
 ## App current appearance
 
-![Main Page](./preview/preview-main.png)
-![Preview Page](./preview/preview-preview.png)
+| MainPage | Preview |
+| :------: | :-----: |
+| ![Main Page](./preview/preview-main.png) | ![Preview Page](./preview/preview-preview.png) |
 
 ## Feature
 

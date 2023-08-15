@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use tauri::{command, AppHandle};
+use tauri::{command, AppHandle, Manager};
 use uuid::Uuid;
 
 use crate::{
@@ -11,6 +11,8 @@ use crate::{
         get_opened_unity_asset, UnityResult,
     },
 };
+
+const LOAD_ASSET_DONE: &str = "unity-bundle-load-done";
 
 #[command(async)]
 pub async fn load_unity_asset(app: AppHandle, path: String) -> UnityResult<UnityAsset> {
@@ -33,6 +35,22 @@ pub async fn load_unity_asset(app: AppHandle, path: String) -> UnityResult<Unity
     loading_done(app)?;
     Ok(asset)
 }
+
+pub async fn dropped_unity_asset(app: AppHandle, paths: Vec<PathBuf>) -> UnityResult<()> {
+    app.emit_all("loading", true)?;
+    let mut result = Vec::new();
+    for path in paths.into_iter().filter(|path| path.is_file()) {
+        let Some(path) = path.as_os_str().to_str() else{
+            continue;
+        };
+        if let Ok(ua) = load_unity_asset(app.clone(), path.to_string()).await {
+            result.push(ua)
+        }
+    }
+    app.emit_to("main", LOAD_ASSET_DONE, result)?;
+    Ok(())
+}
+
 #[command]
 pub fn sync_loaded_asset() -> Vec<UnityAsset> {
     get_opened_unity_asset()

@@ -14,7 +14,7 @@ import { ref } from "vue";
 import { BtnDefine } from "../tauri_pack/pack.ts";
 import TopBtnBar from "./TopBtnBar.vue";
 import ExpandableList from "./ExpandableList.vue";
-import { openOneFile } from "../tauri_pack/pack";
+import { loadDone, openOneFile } from "../tauri_pack/pack";
 import {
   loadUnityAsset,
   syncLoadedAsset,
@@ -76,6 +76,7 @@ const buttons: BtnDefine[] = [
 ];
 
 const unliten = ref<UnlistenFn | null>();
+const unLitenAsset = ref<UnlistenFn | null>();
 onMounted(async () => {
   unliten.value = await listen<boolean>(
     "loading",
@@ -83,11 +84,29 @@ onMounted(async () => {
       loading.value = payload;
     }
   );
+
+  unLitenAsset.value = await listen<UnityAsset[]>(
+    "unity-bundle-load-done",
+    ({ payload }: { payload: UnityAsset[] }) => {
+      payload.forEach((element) => {
+        let idx = unityAsset.value.findIndex(
+          (value: UnityAsset) => value.id == element.id
+        );
+        if (idx == -1) {
+          unityAsset.value.push(element);
+        }
+      });
+      loadDone();
+    }
+  );
 });
 
 onUnmounted(() => {
   if (unliten.value) {
     unliten.value();
+  }
+  if (unLitenAsset.value) {
+    unLitenAsset.value();
   }
 });
 </script>
