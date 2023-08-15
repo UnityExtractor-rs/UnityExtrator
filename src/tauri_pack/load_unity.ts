@@ -1,6 +1,6 @@
 import { tauri } from "@tauri-apps/api"
 import { ExpandItem } from "../dto/expandable";
-import { exportBoundle, exportObject } from "./export";
+import { exportBundle, exportObject } from "./export";
 import { startLoading } from "./pack";
 
 export interface UnityAsset {
@@ -42,7 +42,7 @@ export async function saveObject(parent: UnityAsset, obj: UnityObject): Promise<
 
 }
 
-export async function preiviewObject(parent: UnityAsset, obj: UnityObject): Promise<void> {
+export async function previewObject(parent: UnityAsset, obj: UnityObject): Promise<void> {
     console.log(`load:${parent.id}-${obj.id}`);
 
     await tauri.invoke<void>("preview_object", { assetId: parent.id, objectId: obj.id })
@@ -51,28 +51,28 @@ export async function preiviewObject(parent: UnityAsset, obj: UnityObject): Prom
 export function unityAssetToExpandable(parent: UnityAsset): ExpandItem {
     return {
         name: parent.name,
-        desription: parent.location,
+        description: parent.location,
         icon: "mdi-unity",
         menuItems: [
             {
                 icon: "mdi-export", text: "Export Full", onClick: async () => {
                     startLoading()
-                    await exportBoundle(parent).catch((err) => {
-                        alert(`cannot Save Boundle: ${err}`)
+                    await exportBundle(parent).catch((err) => {
+                        alert(`cannot Save Bundle: ${err}`)
                     })
 
                 }
             }
         ],
-        childen: parent.assets.map((obj: UnityObject) => {
+        children: parent.assets.map((obj: UnityObject) => {
             return {
                 name: obj.name,
                 icon: obj.icon,
-                desription: `${obj.type}[${obj.meta.join(" ")}]`,
+                description: `${obj.type}[${obj.meta.join(" ")}]`,
                 onClick: async () => {
                     startLoading()
-                    await preiviewObject(parent, obj).catch((err) => {
-                        alert(`cannot preivew :${err}`)
+                    await previewObject(parent, obj).catch((err) => {
+                        alert(`cannot preview :${err}`)
                     })
                 },
                 menuItems: [

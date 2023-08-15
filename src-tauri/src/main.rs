@@ -4,7 +4,7 @@
 mod preview;
 mod unity;
 
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Manager, WindowEvent::CloseRequested};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -31,6 +31,13 @@ fn main() {
         ])
         .setup(|app| {
             let windows = app.get_window("main").expect("Main windows not found");
+            let app_handle = app.app_handle();
+            windows.on_window_event(move |event| {
+                if let CloseRequested { api, .. } = event {
+                    api.prevent_close();
+                    app_handle.exit(0)
+                }
+            });
             #[cfg(debug_assertions)]
             windows.open_devtools();
 

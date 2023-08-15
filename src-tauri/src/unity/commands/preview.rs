@@ -7,7 +7,7 @@ use uuid::Uuid;
 use crate::{
     preview::{preview_image, preview_text, ImagePreviewPayload, TextPreviewPayload},
     unity::{
-        dto::LoadedPyaload, error::Error, get_opend_unity_asset, loaded_object::LoadedObject,
+        dto::LoadedPayload, error::Error, get_opened_unity_asset, loaded_object::LoadedObject,
         utils::get_object, UnityResult,
     },
 };
@@ -15,19 +15,19 @@ use crate::{
 #[command(async)]
 pub async fn preview_object(app: AppHandle, asset_id: Uuid, object_id: usize) -> UnityResult<()> {
     // load
-    let object = get_object(get_opend_unity_asset(), asset_id, object_id)?;
+    let object = get_object(get_opened_unity_asset(), asset_id, object_id)?;
 
     // encoding image
     match &object.payload {
-        LoadedPyaload::Image(img) => {
+        LoadedPayload::Image(img) => {
             let preview = handle_image_preview(img, &object)?;
             preview_image(app, preview).await?;
         }
-        LoadedPyaload::Text(text) => {
-            let preview = handle_text_preview(&text, &object)?;
+        LoadedPayload::Text(text) => {
+            let preview = handle_text_preview(text, &object)?;
             preview_text(app, preview).await?;
         }
-        LoadedPyaload::Raw(_) => {
+        LoadedPayload::Raw(_) => {
             eprintln!("Raw Preview not support");
             Err(Error::RawNotPreviewAble)?;
         }
@@ -53,7 +53,7 @@ fn handle_image_preview(
         width: Some(img.width() as _),
         height: Some(img.height() as _),
         image_url: base64_encoded,
-        fromat: "Png".to_string(),
+        format: "Png".to_string(),
     };
     Ok(payload)
 }

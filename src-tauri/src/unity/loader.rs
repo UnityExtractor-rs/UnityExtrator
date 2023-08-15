@@ -6,7 +6,7 @@ use unity_rs::{
 };
 
 use super::{
-    dto::{Loadable, LoadedPyaload, StoreUnityBoundle},
+    dto::{Loadable, LoadedPayload, StoreUnityBundle},
     loaded_object::LoadedObject,
     UnityResult,
 };
@@ -26,9 +26,9 @@ impl Loadable for Texture2D {
         ]
     }
 
-    fn load_preview(&self) -> super::UnityResult<LoadedPyaload> {
+    fn load_preview(&self) -> super::UnityResult<LoadedPayload> {
         let img = self.decode_image()?.value().clone();
-        Ok(LoadedPyaload::Image(img))
+        Ok(LoadedPayload::Image(img))
     }
 }
 
@@ -44,11 +44,11 @@ impl Loadable for TextAsset {
         vec![format!("script len:{}", self.script.len())]
     }
 
-    fn load_preview(&self) -> UnityResult<LoadedPyaload> {
+    fn load_preview(&self) -> UnityResult<LoadedPayload> {
         let payload = self
             .script_string()
-            .map(|s| LoadedPyaload::Text(s.to_string()))
-            .or_else(|_| Ok::<_, unity_rs::UnityError>(LoadedPyaload::Raw(self.script.clone())))?;
+            .map(|s| LoadedPayload::Text(s.to_string()))
+            .or_else(|_| Ok::<_, unity_rs::UnityError>(LoadedPayload::Raw(self.script.clone())))?;
         Ok(payload)
     }
 }
@@ -68,13 +68,13 @@ impl Loadable for Sprite<'_> {
         )]
     }
 
-    fn load_preview(&self) -> super::UnityResult<LoadedPyaload> {
+    fn load_preview(&self) -> super::UnityResult<LoadedPayload> {
         let img = self.decode_image()?.clone();
-        Ok(LoadedPyaload::Image(img))
+        Ok(LoadedPayload::Image(img))
     }
 }
 
-impl StoreUnityBoundle {
+impl StoreUnityBundle {
     pub fn load(path: &str, name: &str) -> UnityResult<Self> {
         let mut env = Env::new();
         let mut file = std::fs::OpenOptions::new().read(true).open(path)?;

@@ -9,7 +9,7 @@
         <v-list-item
           v-bind="props"
           :title="item.name"
-          :subtitle="item.desription"
+          :subtitle="item.description"
         >
           <template v-slot:prepend>
             <v-btn
@@ -41,16 +41,16 @@
               </v-list>
             </v-menu>
           </template>
-          <v-tooltip v-if="item.desription" activator="parent" location="top">
-            {{ `${item.name} - ${item.desription}` }}
+          <v-tooltip v-if="item.description" activator="parent" location="top">
+            {{ `${item.name} - ${item.description}` }}
           </v-tooltip>
         </v-list-item>
       </template>
       <v-list-item
-        v-for="(child, childIdx) in item.childen"
+        v-for="(child, childIdx) in item.children"
         :key="childIdx"
         :title="child.name"
-        :subtitle="child.desription"
+        :subtitle="child.description"
         @click="child.onClick"
       >
         <template v-slot:prepend>
@@ -80,8 +80,8 @@
             </v-list>
           </v-menu>
         </template>
-        <v-tooltip v-if="child.desription" activator="parent" location="top">
-          {{ `${child.name} - ${child.desription}` }}
+        <v-tooltip v-if="child.description" activator="parent" location="top">
+          {{ `${child.name} - ${child.description}` }}
         </v-tooltip>
       </v-list-item>
     </v-list-group>

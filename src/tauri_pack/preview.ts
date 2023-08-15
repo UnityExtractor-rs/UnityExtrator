@@ -8,7 +8,7 @@ export interface ImagePreview {
     imageUrl: string,
     name: string,
     description?: string,
-    fromat: string,
+    format: string,
     width: number,
     height: number
 }
@@ -19,7 +19,7 @@ export interface TextPreview {
     description?: string,
 }
 
-export interface PreviewUnLisen {
+export interface PreviewUnListen {
     image: UnlistenFn,
     text: UnlistenFn
 }
@@ -29,27 +29,29 @@ export enum PreviewMode {
     Text
 }
 
-export async function lisenPreview(state: Ref<null | ImagePreview | TextPreview>, mode: Ref<PreviewMode | null>): Promise<PreviewUnLisen> {
-    let image = await appWindow.listen<ImagePreview>("preview_image", ({ _, payload }: Event<ImagePreview>) => {
-        state.value = payload
-        mode.value = PreviewMode.Image
-        console.log(payload);
+export async function listenPreview(state: Ref<null | ImagePreview | TextPreview>, mode: Ref<PreviewMode | null>): Promise<PreviewUnListen> {
+    let image = await appWindow.listen<ImagePreview>("preview_image",
+        ({ _, payload }: Event<ImagePreview>) => {
+            state.value = payload
+            mode.value = PreviewMode.Image
+            console.log(payload);
 
-        loadDone()
-    })
+            loadDone()
+        })
 
-    let text = await appWindow.listen<TextPreview>("preview_text", (event: Event<TextPreview>) => {
-        state.value = event.payload;
-        mode.value = PreviewMode.Text
-        console.log(event.payload);
+    let text = await appWindow.listen<TextPreview>("preview_text",
+        (event: Event<TextPreview>) => {
+            state.value = event.payload;
+            mode.value = PreviewMode.Text
+            console.log(event.payload);
 
-        loadDone()
-    })
+            loadDone()
+        })
 
     return { image, text }
 }
 
-export async function unListenAll(unlisten: PreviewUnLisen) {
+export async function unListenAll(unlisten: PreviewUnListen) {
     unlisten.image()
     unlisten.text()
 }

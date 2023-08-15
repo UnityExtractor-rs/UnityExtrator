@@ -2,18 +2,18 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import {
   ImagePreview,
-  lisenPreview,
+  listenPreview,
   PreviewMode,
-  PreviewUnLisen,
+  PreviewUnListen,
   TextPreview,
   unListenAll,
 } from "../tauri_pack/preview";
 
 const previewPayload = ref<null | ImagePreview | TextPreview>(null);
 const previewMode = ref<null | PreviewMode>(null);
-const unListenFn = ref<null | PreviewUnLisen>(null);
+const unListenFn = ref<null | PreviewUnListen>(null);
 onMounted(async () => {
-  unListenFn.value = await lisenPreview(previewPayload, previewMode);
+  unListenFn.value = await listenPreview(previewPayload, previewMode);
 });
 
 onUnmounted(() => {
@@ -59,7 +59,7 @@ const payload = computed(() => {
 const meta = computed(() => {
   if (previewMode.value == PreviewMode.Image) {
     let value = previewPayload.value as ImagePreview;
-    return ["Texture2D", value.fromat, `(${value.width} * ${value.height})`];
+    return ["Texture2D", value.format, `(${value.width} * ${value.height})`];
   } else if (previewMode.value == PreviewMode.Text) {
     let value = previewPayload.value as TextPreview;
     return ["TextAsset", `length: ${value.payload.length}`];

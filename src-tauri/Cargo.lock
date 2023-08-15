@@ -3277,7 +3277,7 @@ dependencies = [
 [[package]]
 name = "texture2ddecoder"
 version = "0.0.5"
-source = "git+https://github.com/yuanyan3060/texture2ddecoder#f4200fe4864daa8f41aace0d8dcee0d098988994"
+source = "git+https://github.com/yuanyan3060/texture2ddecoder?rev=f4200fe#f4200fe4864daa8f41aace0d8dcee0d098988994"
 dependencies = [
  "paste",
 ]
@@ -3285,7 +3285,7 @@ dependencies = [
 [[package]]
 name = "texture_decoder"
 version = "0.1.0"
-source = "git+https://github.com/yuanyan3060/unity-rs.git?rev=0cbfac1#0cbfac1fc7651f439fc92a507bbf97c4e2033a26"
+source = "git+https://github.com/Goodjooy/unity-rs.git?rev=3c516b5#3c516b5a4f26d0d8a2fe80416d3b82ac88fb390d"
 dependencies = [
  "byteorder",
  "bytes",
@@ -3582,7 +3582,7 @@ checksum = "1dd624098567895118886609431a7c3b8f516e41d30e0643f03d94592a147e36"
 
 [[package]]
 name = "unity-extractor"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "base64 0.21.2",
  "bytes",
@@ -3601,7 +3601,7 @@ dependencies = [
 [[package]]
 name = "unity_rs"
 version = "0.1.0"
-source = "git+https://github.com/yuanyan3060/unity-rs.git?rev=0cbfac1#0cbfac1fc7651f439fc92a507bbf97c4e2033a26"
+source = "git+https://github.com/Goodjooy/unity-rs.git?rev=3c516b5#3c516b5a4f26d0d8a2fe80416d3b82ac88fb390d"
 dependencies = [
  "dashmap",
  "image",
