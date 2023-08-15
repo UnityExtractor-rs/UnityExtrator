@@ -48,7 +48,6 @@
       {
         "fullscreen": false,
         "resizable": false,
-        "alwaysOnTop": true,
         "title": "UnityExtractor",
         "width": 328,
         "height": 648
