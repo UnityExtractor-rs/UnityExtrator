@@ -1,6 +1,6 @@
 [package]
 name = "unity-extractor"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Tauri App"
 authors = ["FrozenString<frozenstringstable@gmail.com>"]
 license-file = "../LICENSE"

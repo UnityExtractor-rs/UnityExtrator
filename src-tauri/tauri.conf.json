@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "unity-extractor",
-    "version": "0.1.1"
+    "version": "0.1.2"
   },
   "tauri": {
     "allowlist": {
@@ -48,7 +48,6 @@
       {
         "fullscreen": false,
         "resizable": false,
-        "alwaysOnTop": true,
         "title": "UnityExtractor",
         "width": 328,
         "height": 648

@@ -63,6 +63,6 @@ pub async fn init_window(app: &AppHandle) -> tauri::Result<Window> {
     if !window.is_devtools_open() {
         window.open_devtools()
     }
-
+    window.set_focus()?;
     Ok(window)
 }

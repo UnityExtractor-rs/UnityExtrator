@@ -81,7 +81,7 @@ const meta = computed(() => {
         <v-card-subtitle>
           {{ description }} | {{ meta.join(", ") }}
         </v-card-subtitle>
-        <v-card-text class="align-center pa-2" style="flex-grow: 1">
+        <v-card-text class="align-center pa-2 h-0" style="flex: 1">
           <v-row
             :id="
               previewMode == PreviewMode.Image
@@ -90,7 +90,7 @@ const meta = computed(() => {
             "
             align="center"
             align-content="center"
-            class="fill-height ma-0"
+            class="h-100 ma-0 pa-1"
             justify="center"
             no-gutters
           >

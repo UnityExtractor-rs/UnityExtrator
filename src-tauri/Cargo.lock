@@ -3582,7 +3582,7 @@ checksum = "1dd624098567895118886609431a7c3b8f516e41d30e0643f03d94592a147e36"
 
 [[package]]
 name = "unity-extractor"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "base64 0.21.2",
  "bytes",
