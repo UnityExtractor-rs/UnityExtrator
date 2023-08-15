@@ -36,7 +36,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `app-v${process.env.PACKAGE_VERSION}`,
               name: `UnityExtractor v${process.env.PACKAGE_VERSION}`,
-              body: '${{ steps.description.outputs.content }}',
+              body: `${ steps.description.outputs.content }`,
               draft: true,
               prerelease: false
             })
