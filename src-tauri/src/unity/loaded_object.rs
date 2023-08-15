@@ -16,11 +16,11 @@ pub struct LoadedObject {
 impl LoadedObject {
     pub fn new<L: Loadable>(path_id: i64, loaded: L) -> UnityResult<Arc<Self>> {
         Ok(Arc::new(Self {
-                    icon: L::icon(),
-                    obj_id: path_id,
-                    name: loaded.name(),
-                    meta: loaded.meta(),
-                    payload: loaded.load_preview()?,
-                }))
+            icon: L::icon(),
+            obj_id: path_id,
+            name: loaded.name(),
+            meta: loaded.meta(),
+            payload: loaded.load_preview()?,
+        }))
     }
 }

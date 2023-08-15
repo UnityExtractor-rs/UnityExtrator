@@ -32,11 +32,11 @@ fn main() {
         .setup(|app| {
             let windows = app.get_window("main").expect("Main windows not found");
             let app_handle = app.app_handle();
-            windows.on_window_event(move |event| match event {
-                CloseRequested { api,.. } =>{ 
+            windows.on_window_event(move |event| {
+                if let CloseRequested { api, .. } = event {
                     api.prevent_close();
-                    app_handle.exit(0)}
-                _ => {}
+                    app_handle.exit(0)
+                }
             });
             #[cfg(debug_assertions)]
             windows.open_devtools();

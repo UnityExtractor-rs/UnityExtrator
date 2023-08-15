@@ -24,7 +24,7 @@ pub async fn preview_object(app: AppHandle, asset_id: Uuid, object_id: usize) ->
             preview_image(app, preview).await?;
         }
         LoadedPayload::Text(text) => {
-            let preview = handle_text_preview(&text, &object)?;
+            let preview = handle_text_preview(text, &object)?;
             preview_text(app, preview).await?;
         }
         LoadedPayload::Raw(_) => {

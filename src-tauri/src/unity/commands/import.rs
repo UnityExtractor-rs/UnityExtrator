@@ -22,8 +22,7 @@ pub async fn load_unity_asset(app: AppHandle, path: String) -> UnityResult<Unity
         let filename = PathBuf::from(path.clone());
         let filename = filename
             .file_name()
-            .map(|s| s.to_str())
-            .flatten()
+            .and_then(|s| s.to_str())
             .ok_or_else(|| Error::UnknownPath(path.clone()))?;
         //load
         let store = StoreUnityBundle::load(&path, filename)?;

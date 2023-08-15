@@ -20,4 +20,3 @@ pub(super) fn get_object(
 
     Ok(Arc::clone(object))
 }
-
