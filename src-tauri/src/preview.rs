@@ -24,9 +24,8 @@ pub struct ImagePreviewPayload {
 
 #[command(async)]
 pub async fn preview_image(app: AppHandle, payload: ImagePreviewPayload) -> tauri::Result<()> {
-    let window = init_window(app).await?;
+    let window = init_window(&app).await?;
     window.emit(PREVIEW_IMG, payload)?;
-
     Ok(())
 }
 
@@ -39,25 +38,21 @@ pub struct TextPreviewPayload {
 
 #[command(async)]
 pub async fn preview_text(app: AppHandle, payload: TextPreviewPayload) -> tauri::Result<()> {
-    let window = init_window(app).await?;
+    let window = init_window(&app).await?;
     window.emit(PREVIEW_TEXT, payload)?;
     Ok(())
 }
 
-pub async fn init_window(app: AppHandle) -> tauri::Result<Window> {
+pub async fn init_window(app: &AppHandle) -> tauri::Result<Window> {
     let window = if let Some(window) = app.get_window(WINDOWS_NAME) {
         window
     } else {
-        let w = WindowBuilder::new(
-            &app,
-            WINDOWS_NAME,
-            WindowUrl::App(WINDOW_PATH.to_path_buf()),
-        )
-        .title("Preview")
-        .focused(true)
-        .center()
-        .inner_size(816f64, 648f64)
-        .build()?;
+        let w = WindowBuilder::new(app, WINDOWS_NAME, WindowUrl::App(WINDOW_PATH.to_path_buf()))
+            .title("Preview")
+            .focused(true)
+            .center()
+            .inner_size(816f64, 648f64)
+            .build()?;
 
         // wait window open
         sleep(Duration::from_millis(500));

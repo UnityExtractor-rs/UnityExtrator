@@ -1,6 +1,8 @@
 import { tauri } from "@tauri-apps/api"
 import { ExpandItem } from "../dto/expandable";
 import { emit } from "@tauri-apps/api/event";
+import { exportBoundle, exportObject } from "./export";
+import { startLoading } from "./pack";
 
 export interface UnityAsset {
     id: string,
@@ -29,7 +31,9 @@ export async function loadUnityAsset(filename: string): Promise<UnityAsset> {
 }
 
 export async function saveObject(parent: UnityAsset, obj: UnityObject): Promise<void> {
+    startLoading()
     console.log(parent, obj);
+    await exportObject(parent, obj)
 
 }
 
@@ -45,7 +49,15 @@ export function unityAssetToExpandable(parent: UnityAsset): ExpandItem {
         desription: parent.location,
         icon: "mdi-unity",
         menuItems: [
-            { icon: "mdi-export", text: "Export Full", onClick: () => { } }
+            {
+                icon: "mdi-export", text: "Export Full", onClick: async () => {
+                    startLoading()
+                    await exportBoundle(parent).catch((err) => {
+                        alert(`cannot Save Boundle: ${err}`)
+                    })
+
+                }
+            }
         ],
         childen: parent.assets.map((obj: UnityObject) => {
             return {
@@ -53,7 +65,7 @@ export function unityAssetToExpandable(parent: UnityAsset): ExpandItem {
                 icon: obj.icon,
                 desription: `${obj.type}[${obj.meta.join(" ")}]`,
                 onClick: async () => {
-                    emit("loading", true)
+                    startLoading()
                     await preiviewObject(parent, obj).catch((err) => {
                         alert(`cannot preivew :${err}`)
                     })
@@ -63,7 +75,9 @@ export function unityAssetToExpandable(parent: UnityAsset): ExpandItem {
                         icon: "mdi-export",
                         text: "Save Object",
                         onClick: async () => {
-                            await saveObject(parent, obj)
+                            await saveObject(parent, obj).catch((err) => {
+                                alert(`cannot Save Object: ${err}`)
+                            })
 
                         }
                     }

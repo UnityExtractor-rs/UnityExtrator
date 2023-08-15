@@ -4,7 +4,7 @@
 mod preview;
 mod unity;
 
-use tauri::Manager;
+use tauri::{AppHandle, Manager};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -14,6 +14,8 @@ fn greet(name: &str) -> String {
 use preview::{preview_image, preview_text};
 use unity::{load_unity_asset, preview_object};
 
+use crate::unity::{export_bundle, export_file_type, export_object};
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -21,7 +23,10 @@ fn main() {
             load_unity_asset,
             preview_image,
             preview_text,
-            preview_object
+            preview_object,
+            export_bundle,
+            export_file_type,
+            export_object,
         ])
         .setup(|app| {
             let windows = app.get_window("main").expect("Main windows not found");
@@ -32,4 +37,9 @@ fn main() {
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+fn loading_done(app: AppHandle) ->tauri::Result<()>{
+    app.emit_all("loading", false)?;
+    Ok(())
 }

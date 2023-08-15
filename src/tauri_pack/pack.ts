@@ -1,19 +1,6 @@
-import {dialog, tauri,} from "@tauri-apps/api";
+import { dialog, tauri, } from "@tauri-apps/api";
+import { emit } from "@tauri-apps/api/event";
 
-export interface ImagePayload {
-    obj_url: string,
-    name:string,
-    description?: string,
-    ty?: string,
-    width?: number,
-    height?: number,
-}
-
-export async function PreviewImage(payload: ImagePayload) {
-    return await tauri.invoke<void>("preview_image", {
-        payload
-    })
-}
 
 export async function blobToBase64(blob: Blob): Promise<string> {
 
@@ -32,30 +19,39 @@ export async function blobToBase64(blob: Blob): Promise<string> {
     return await promise
 }
 
-export function notNullOr<T>(data:T| undefined|null,def:T):T{
-    return data?data:def
+export function notNullOr<T>(data: T | undefined | null, def: T): T {
+    return data ? data : def
 }
 
-export interface BtnDefine{
+export interface BtnDefine {
     icon?: string,
     onClick: () => void,
     color?: string,
     tooltip?: string,
     variant?: "elevated" | "flat" | "tonal" | "outlined" | "text" | "plain",
-    id?:string
+    id?: string
 }
 
-export async function openOneFile(title?:string, filters?:DailogFilter):Promise<string | null>{
+export async function openOneFile(title?: string, filters?: DailogFilter): Promise<string | null> {
     let path = await dialog.open({
-        title: title? title:"Select a File",
+        title: title ? title : "Select a File",
         multiple: false,
         directory: false,
         recursive: false,
-        filters:filters
-      });
-      if (path == null || (typeof path == "object" && path.length == 0)) {
+        filters: filters
+    });
+    if (path == null || (typeof path == "object" && path.length == 0)) {
         return null;
-      }
-      let filename = typeof path == "string" ? path : path[0];
-      return filename
+    }
+    let filename = typeof path == "string" ? path : path[0];
+    return filename
+}
+
+
+export function startLoading() {
+    emit("loading", true)
+}
+
+export function loadDone() {
+    emit("loading", false)
 }

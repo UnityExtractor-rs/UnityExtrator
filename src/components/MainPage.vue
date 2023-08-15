@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import { dialog, fs } from "@tauri-apps/api";
 import { ref } from "vue";
-import { blobToBase64, BtnDefine, PreviewImage } from "../tauri_pack/pack.ts";
+import { blobToBase64, BtnDefine } from "../tauri_pack/pack.ts";
 import TopBtnBar from "./TopBtnBar.vue";
 import ExpandableList from "./ExpandableList.vue";
 import { openOneFile } from "../tauri_pack/pack";

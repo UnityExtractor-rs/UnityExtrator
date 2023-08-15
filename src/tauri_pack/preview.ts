@@ -1,6 +1,7 @@
 import { Event, UnlistenFn, emit } from "@tauri-apps/api/event"
 import { Ref } from "vue"
 import { appWindow } from "@tauri-apps/api/window"
+import { loadDone } from "./pack"
 
 
 export interface ImagePreview {
@@ -34,7 +35,7 @@ export async function lisenPreview(state: Ref<null | ImagePreview | TextPreview>
         mode.value = PreviewMode.Image
         console.log(payload);
 
-        emit("loading", false)
+        loadDone()
     })
 
     let text = await appWindow.listen<TextPreview>("preview_text", (event: Event<TextPreview>) => {
@@ -42,7 +43,7 @@ export async function lisenPreview(state: Ref<null | ImagePreview | TextPreview>
         mode.value = PreviewMode.Text
         console.log(event.payload);
 
-        emit("loading", false)
+        loadDone()
     })
 
     return { image, text }

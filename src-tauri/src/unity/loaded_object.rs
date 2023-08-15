@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use super::{
     dto::{Loadable, LoadedPyaload},
     UnityResult,
@@ -12,13 +14,13 @@ pub struct LoadedObject {
 }
 
 impl LoadedObject {
-    pub fn new<L: Loadable>(path_id: i64, loaded: L) -> UnityResult<Self> {
-        Ok(Self {
-            icon: L::icon(),
-            obj_id: path_id,
-            name: loaded.name(),
-            meta: loaded.meta(),
-            payload: loaded.load_preview()?,
-        })
+    pub fn new<L: Loadable>(path_id: i64, loaded: L) -> UnityResult<Arc<Self>> {
+        Ok(Arc::new(Self {
+                    icon: L::icon(),
+                    obj_id: path_id,
+                    name: loaded.name(),
+                    meta: loaded.meta(),
+                    payload: loaded.load_preview()?,
+                }))
     }
 }
