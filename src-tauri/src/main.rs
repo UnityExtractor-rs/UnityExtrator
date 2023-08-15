@@ -4,7 +4,7 @@
 mod preview;
 mod unity;
 
-use tauri::{AppHandle, Manager, WindowEvent::CloseRequested};
+use tauri::{AppHandle, Manager, WindowEvent::{CloseRequested, self}, async_runtime};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -12,7 +12,7 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 use preview::{preview_image, preview_text};
-use unity::{load_unity_asset, preview_object};
+use unity::{load_unity_asset, preview_object, dropped_unity_asset};
 
 use crate::unity::{export_bundle, export_file_type, export_object, sync_loaded_asset};
 
@@ -33,9 +33,15 @@ fn main() {
             let windows = app.get_window("main").expect("Main windows not found");
             let app_handle = app.app_handle();
             windows.on_window_event(move |event| {
-                if let CloseRequested { api, .. } = event {
-                    api.prevent_close();
-                    app_handle.exit(0)
+                match event {
+                    CloseRequested { api, .. } => {
+                        api.prevent_close();
+                        app_handle.exit(0)
+                    }
+                    WindowEvent::FileDrop(tauri::FileDropEvent::Dropped(paths)) => {
+                        async_runtime::spawn(dropped_unity_asset(app_handle.clone(), paths.clone()));
+                    },
+                    _ => (),
                 }
             });
             #[cfg(debug_assertions)]
