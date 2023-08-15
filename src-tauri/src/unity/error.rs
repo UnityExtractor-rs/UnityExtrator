@@ -21,7 +21,7 @@ pub enum Error {
     #[error("Asset[{0}] Not Have Object[{1}]")]
     ObjectNotExist(String, usize),
 
-    #[error("Row TextAsset cannot been preview")]
+    #[error("Raw TextAsset cannot been preview")]
     RawNotPreviewAble,
 }
 
