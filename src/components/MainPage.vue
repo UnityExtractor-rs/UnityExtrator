@@ -37,7 +37,7 @@ const buttons: BtnDefine[] = [
     icon: "mdi-sync",
     onClick: async () => {
       let value = await syncLoadedAsset();
-      unityAsset.value.push(...value);
+      unityAsset.value = value;
     },
     tooltip: "Sync Loaded Unity File",
   },
