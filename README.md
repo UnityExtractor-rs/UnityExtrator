@@ -1,4 +1,9 @@
 # UnityExtractor
+<div align="center">
+
+![LOGO](./src-tauri/icons/128x128.png)
+
+</div>
 
 A Unity asset extractor base on `Tauri` + `Vue` + `Vuetify`
 
