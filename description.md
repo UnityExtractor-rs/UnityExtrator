@@ -1,5 +1,5 @@
-## UnityExtractor v0.1.2
+# UnityExtractor v0.1.3
 
-## :bug: Bug Fix
+## :sparkles: What's new
 
-- fix: preview image overflow
+- using New Logo
