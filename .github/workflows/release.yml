@@ -26,6 +26,14 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./description.md
+      - name: replace str
+        id: node_use_description
+        uses: mad9000/actions-find-and-replace-string@3
+        with:
+          source: ${{steps.description.outputs.content}}
+          find: "`"
+          replace: "\\`"
+
       - name: create release
         id: create-release
         uses: actions/github-script@v6
@@ -36,7 +44,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `app-v${process.env.PACKAGE_VERSION}`,
               name: `UnityExtractor v${process.env.PACKAGE_VERSION}`,
-              body: `${ steps.description.outputs.content }`,
+              body: `${{ steps.node_use_description.outputs.content }}`,
               draft: true,
               prerelease: false
             })
