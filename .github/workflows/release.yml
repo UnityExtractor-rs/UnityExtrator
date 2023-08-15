@@ -21,19 +21,6 @@ jobs:
           node-version: 16
       - name: get version
         run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-      - name: get version description
-        id: description
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ./description.md
-      - name: replace str
-        id: node_use_description
-        uses: mad9000/actions-find-and-replace-string@3
-        with:
-          source: >- 
-            ${{steps.description.outputs.content}}
-          find: "`"
-          replace: "\\`"
 
       - name: create release
         id: create-release
@@ -45,7 +32,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `app-v${process.env.PACKAGE_VERSION}`,
               name: `UnityExtractor v${process.env.PACKAGE_VERSION}`,
-              body: `${{ steps.node_use_description.outputs.content }}`,
+              body: await github.io.io_util.readFile("./description.md"),
               draft: true,
               prerelease: false
             })
