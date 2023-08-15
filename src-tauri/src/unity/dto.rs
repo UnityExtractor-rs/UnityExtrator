@@ -1,11 +1,8 @@
-use std::{any::Any, collections::HashMap, path::PathBuf, ops::Deref, hash::Hash};
+use image::RgbaImage;
 
-use dashmap::mapref::one::Ref;
-use image::{error, RgbaImage};
-use serde::Serializer;
-use unity_rs::ClassID;
+use unity_rs::{ClassID, Env};
 
-use super::UnityResult;
+use super::{loaded_object::LoadedObject, UnityResult};
 
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct UnityAsset {
@@ -16,7 +13,7 @@ pub struct UnityAsset {
 }
 
 impl UnityAsset {
-    pub fn from_store(id: &uuid::Uuid, store: &StoreUnityAsset) -> Self {
+    pub fn from_store(id: &uuid::Uuid, store: &StoreUnityBoundle) -> Self {
         Self {
             id: id.to_string(),
             name: store.name.clone(),
@@ -27,10 +24,10 @@ impl UnityAsset {
                 .enumerate()
                 .map(|(id, (ty, data))| UnityObject {
                     id,
-                    name: data.get_name(),
+                    name: data.name.clone(),
                     ty: format!("{:?}", ty),
-                    meta: data.fetch_meta(),
-                    icon: data.get_icon(),
+                    meta: data.meta.clone(),
+                    icon: data.icon,
                 })
                 .collect(),
         }
@@ -41,42 +38,33 @@ impl UnityAsset {
 pub struct UnityObject {
     pub id: usize,
     pub name: String,
-    #[serde(rename= "type")]
+    #[serde(rename = "type")]
     pub ty: String,
     pub meta: Vec<String>,
     pub icon: &'static str,
 }
 
-pub trait Loadable: Any + Send + Sync + 'static {
-    fn get_icon(&self) -> &'static str {
+pub trait Loadable: Send + Sync {
+    fn icon() -> &'static str {
         "mid-package-variant-closed"
     }
 
-    fn get_name(&self) -> String;
+    fn name(&self) -> String;
 
-    fn fetch_meta(&self) -> Vec<String>;
+    fn meta(&self) -> Vec<String>;
 
-    fn load_preview(&self) -> UnityResult<Preview<'_, i64, RgbaImage>>;
+    fn load_preview(&self) -> UnityResult<LoadedPyaload>;
 }
 
-pub enum Preview<'a, K, T> {
-    Cache(Ref<'a, K, T>),
-    Owned(T),
+pub enum LoadedPyaload {
+    Image(RgbaImage),
+    Text(String),
+    Raw(Vec<u8>),
 }
 
-impl<'a, K:Eq + Hash, T> Deref for Preview<'a, K, T> {
-    type Target = T;
-
-    fn deref(&self) -> &Self::Target {
-        match self {
-            Preview::Cache(ref_data) => ref_data.value(),
-            Preview::Owned(data) => data,
-        }
-    }
-}
-
-pub struct StoreUnityAsset {
-    pub objects: Vec<(ClassID, Box<dyn Loadable>)>,
+pub struct StoreUnityBoundle {
+    pub origin: Env,
+    pub objects: Vec<(ClassID, LoadedObject)>,
     pub location: String,
     pub name: String,
 }

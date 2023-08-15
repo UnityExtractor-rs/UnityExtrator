@@ -11,14 +11,16 @@ use tauri::Manager;
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
-use preview::preview_image;
+use preview::{preview_image, preview_text};
 use unity::{load_unity_asset, preview_object};
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             greet,
             load_unity_asset,
             preview_image,
+            preview_text,
             preview_object
         ])
         .setup(|app| {

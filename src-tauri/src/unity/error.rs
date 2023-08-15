@@ -1,15 +1,13 @@
 use std::io;
 
 use image::ImageError;
-use unity_rs::{ClassID, UnityError};
+use unity_rs::UnityError;
 use uuid::Uuid;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error("UnityError: {0}")]
     Unity(#[from] UnityError),
-    #[error("TypePreviewNotSupport: {0:?}")]
-    ObjectNotSupportPreview(ClassID),
     #[error("IoError: {0}")]
     Io(#[from] io::Error),
     #[error("ImageError: {0}")]
@@ -22,6 +20,9 @@ pub enum Error {
     AssetNotLoaded(Uuid),
     #[error("Asset[{0}] Not Have Object[{1}]")]
     ObjectNotExist(String, usize),
+
+    #[error("Row TextAsset cannot been preview")]
+    RawNotPreviewAble,
 }
 
 impl serde::Serialize for Error {
