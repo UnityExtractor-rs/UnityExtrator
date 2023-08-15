@@ -1,6 +1,5 @@
 import { tauri } from "@tauri-apps/api"
 import { ExpandItem } from "../dto/expandable";
-import { emit } from "@tauri-apps/api/event";
 import { exportBoundle, exportObject } from "./export";
 import { startLoading } from "./pack";
 
@@ -27,6 +26,12 @@ export async function loadUnityAsset(filename: string): Promise<UnityAsset> {
     if (!data) {
         throw new Error("cannot Load Unity Asset");
     }
+    return data
+}
+
+export async function syncLoadedAsset(): Promise<UnityAsset[]> {
+    let data = await tauri.invoke<UnityAsset[]>("sync_loaded_asset")
+
     return data
 }
 

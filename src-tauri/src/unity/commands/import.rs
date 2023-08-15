@@ -12,8 +12,8 @@ use crate::{
     },
 };
 
-#[command]
-pub fn load_unity_asset(app: AppHandle, path: String) -> UnityResult<UnityAsset> {
+#[command(async)]
+pub async fn load_unity_asset(app: AppHandle, path: String) -> UnityResult<UnityAsset> {
     let key = Uuid::new_v5(&Uuid::NAMESPACE_OID, path.as_bytes());
 
     let asset = if let Some(loaded) = get_opend_unity_asset().get(&key) {
@@ -33,4 +33,11 @@ pub fn load_unity_asset(app: AppHandle, path: String) -> UnityResult<UnityAsset>
     };
     loading_done(app)?;
     Ok(asset)
+}
+#[command]
+pub fn sync_loaded_asset() -> Vec<UnityAsset> {
+    get_opend_unity_asset()
+        .iter()
+        .map(|item| UnityAsset::from_store(item.key(), item.value()))
+        .collect()
 }

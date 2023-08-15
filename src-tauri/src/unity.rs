@@ -20,5 +20,5 @@ fn get_opend_unity_asset() -> &'static DashMap<Uuid, StoreUnityBoundle> {
 }
 
 pub use commands::{
-    export_bundle, export_file_type, export_object, load_unity_asset, preview_object,
+    export_bundle, export_file_type, export_object, load_unity_asset, preview_object,sync_loaded_asset
 };

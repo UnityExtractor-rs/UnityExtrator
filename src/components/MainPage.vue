@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts" setup>
-import { dialog, fs } from "@tauri-apps/api";
 import { ref } from "vue";
-import { blobToBase64, BtnDefine } from "../tauri_pack/pack.ts";
+import { BtnDefine } from "../tauri_pack/pack.ts";
 import TopBtnBar from "./TopBtnBar.vue";
 import ExpandableList from "./ExpandableList.vue";
 import { openOneFile } from "../tauri_pack/pack";
 import {
   loadUnityAsset,
+  syncLoadedAsset,
   UnityAsset,
   unityAssetToExpandable,
 } from "../tauri_pack/load_unity";
@@ -32,37 +32,14 @@ const listInfo = computed(() =>
   unityAsset.value.map((u: UnityAsset) => unityAssetToExpandable(u))
 );
 
-const onSelectFile = async () => {
-  let path = await dialog.open({
-    title: "Select File",
-    multiple: false,
-    directory: false,
-    recursive: false,
-    filters: [{ name: "Image", extensions: ["png", "jpg", "jpeg"] }],
-  });
-  if (path == null || (typeof path == "object" && path.length == 0)) {
-    return;
-  }
-  let filename = typeof path == "string" ? path : path[0];
-  console.log(filename);
-  let stream = await fs.readBinaryFile(filename);
-  console.log(stream.length);
-  let blob = new Blob([stream]);
-  console.log(blob);
-
-  // property.selectFile(URL.createObjectURL(blob))
-  await PreviewImage({
-    name: filename,
-    obj_url: await blobToBase64(blob),
-    description: "Image from File",
-  });
-};
-
 const buttons: BtnDefine[] = [
   {
-    icon: "mdi-file-image-outline",
-    onClick: onSelectFile,
-    tooltip: "Open an Image",
+    icon: "mdi-sync",
+    onClick: async () => {
+      let value = await syncLoadedAsset();
+      unityAsset.value.push(...value);
+    },
+    tooltip: "Sync Loaded Unity File",
   },
   {
     icon: "mdi-unity",

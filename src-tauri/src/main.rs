@@ -14,7 +14,7 @@ fn greet(name: &str) -> String {
 use preview::{preview_image, preview_text};
 use unity::{load_unity_asset, preview_object};
 
-use crate::unity::{export_bundle, export_file_type, export_object};
+use crate::unity::{export_bundle, export_file_type, export_object, sync_loaded_asset};
 
 fn main() {
     tauri::Builder::default()
@@ -27,6 +27,7 @@ fn main() {
             export_bundle,
             export_file_type,
             export_object,
+            sync_loaded_asset
         ])
         .setup(|app| {
             let windows = app.get_window("main").expect("Main windows not found");
@@ -39,7 +40,7 @@ fn main() {
         .expect("error while running tauri application");
 }
 
-fn loading_done(app: AppHandle) ->tauri::Result<()>{
+fn loading_done(app: AppHandle) -> tauri::Result<()> {
     app.emit_all("loading", false)?;
     Ok(())
 }
